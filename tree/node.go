@@ -24,7 +24,15 @@ func NewNode(id int) *Node {
 
 /*
 ToString returns string formatted like
-"id: self, children: [child1, child2, ...]"
+`
+id: self, children: [child1, child2, ...]
+	id: self, children: [child1, child2, ...]
+		id: self, children: [child1, child2, ...]
+		id: self, children: [child1, child2, ...]
+	id: self, children: [child1, child2, ...]
+		id: self, children: [child1, child2, ...]
+	...
+`
 */
 func (n *Node) ToString() string {
 	return fmt.Sprintf("id: %d, children: %v", n.id, n.children)

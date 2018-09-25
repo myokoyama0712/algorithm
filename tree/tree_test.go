@@ -33,11 +33,11 @@ func TestOutputNotEmptyNode(t *testing.T) {
 	node.children[1].AddChild(6)
 	node.children[1].AddChild(7)
 	node.children[1].AddChild(8)
-	expectedString := "id: 1, children: [2, 3]\n"
-	expectedString += "\tid: 2, children: [4, 5]\n"
+	expectedString := "id: 1, children: [2, 3, ]\n"
+	expectedString += "\tid: 2, children: [4, 5, ]\n"
 	expectedString += "\t\tid: 4, children: []\n"
 	expectedString += "\t\tid: 5, children: []\n"
-	expectedString += "\tid: 3, children: [6, 7, 8]\n"
+	expectedString += "\tid: 3, children: [6, 7, 8, ]\n"
 	expectedString += "\t\tid: 6, children: []\n"
 	expectedString += "\t\tid: 7, children: []\n"
 	expectedString += "\t\tid: 8, children: []\n"
