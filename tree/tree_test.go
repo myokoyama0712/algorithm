@@ -1,7 +1,6 @@
 package tree
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -24,6 +23,37 @@ func TestAddChildNode(t *testing.T) {
 	assert.ElementsMatch(t, expectedSlice, node.children)
 }
 
+func setupTree() *Node {
+	node := NewNode(1)
+	node.AddChild(2)
+	node.AddChild(3)
+	node.children[0].AddChild(4)
+	node.children[0].AddChild(5)
+	node.children[1].AddChild(6)
+	node.children[1].AddChild(7)
+	node.children[1].AddChild(8)
+	return node
+}
+
+func TestFullSearchByBfs(t *testing.T) {
+	node := setupTree()
+	expected := "1 2 3 4 5 6 7 8 "
+	assert.Equal(t, expected, node.FullSearchByBfs())
+}
+
+func TestFullSearchByDfs(t *testing.T) {
+	node := setupTree()
+	expected := "1 2 4 5 3 6 7 8 "
+	assert.Equal(t, expected, node.FullSearchByDfs())
+}
+
+func TestFullSearchByDfsStackVersion(t *testing.T) {
+	node := setupTree()
+	expected := "1 3 8 7 6 2 5 4 "
+	assert.Equal(t, expected, node.FullSearchByDfsStackVersion())
+}
+
+/*
 func TestOutputNotEmptyNode(t *testing.T) {
 	node := NewNode(1)
 	node.AddChild(2)
@@ -44,3 +74,4 @@ func TestOutputNotEmptyNode(t *testing.T) {
 	fmt.Println(expectedString)
 	assert.Equal(t, expectedString, node.ToString())
 }
+*/
