@@ -109,3 +109,37 @@ func TestSortStructByNameAndNumber(t *testing.T) {
 	actual := sortStructByNameAndNumber(personSlice)
 	assert.Equal(t, expected, actual)
 }
+
+// at first, I could not expect the result of this test
+func TestReverseSortStructByNameAndNumber(t *testing.T) {
+	personSlice := []Person{
+		{"third", 3},
+		{"third", 33},
+		{"second", 2},
+		{"fourth", 444},
+		{"second", 222},
+		{"third", 333},
+		{"first", 11},
+		{"fourth", 4},
+		{"fourth", 44},
+		{"first", 111},
+		{"second", 22},
+		{"first", 1},
+	}
+	expected := []Person{
+		{"third", 333},
+		{"third", 33},
+		{"third", 3},
+		{"second", 222},
+		{"second", 22},
+		{"second", 2},
+		{"fourth", 444},
+		{"fourth", 44},
+		{"fourth", 4},
+		{"first", 111},
+		{"first", 11},
+		{"first", 1},
+	}
+	actual := reverseSortStructByNameAndNumber(personSlice)
+	assert.Equal(t, expected, actual)
+}
