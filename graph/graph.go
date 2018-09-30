@@ -56,3 +56,15 @@ func (g *Graph) SetEdgeWeight(i, j, weight int) error {
 	g.adjMatrix[j][i] = weight
 	return nil
 }
+
+func (g *Graph) GetEdgeNumber() int {
+	edgeNumber := 0
+	for i := 0; i < g.GetNodeNumber(); i++ {
+		for j := i + 1; j < g.GetNodeNumber(); j++ {
+			if weight, err := g.GetEdgeWeight(i, j); weight >= 0 && err == nil {
+				edgeNumber++
+			}
+		}
+	}
+	return edgeNumber
+}

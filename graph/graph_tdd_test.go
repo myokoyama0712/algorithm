@@ -6,6 +6,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func setupGraphExample() *Graph {
+	graph := NewGraph(6)
+	graph.SetEdgeWeight(0, 1, 7)
+	graph.SetEdgeWeight(0, 2, 9)
+	graph.SetEdgeWeight(0, 5, 14)
+	graph.SetEdgeWeight(1, 2, 10)
+	graph.SetEdgeWeight(1, 3, 15)
+	graph.SetEdgeWeight(2, 3, 11)
+	graph.SetEdgeWeight(2, 5, 2)
+	graph.SetEdgeWeight(3, 4, 6)
+	graph.SetEdgeWeight(4, 5, 9)
+	return graph
+}
+
 func TestIsInitialAdjMatrixCorrect(t *testing.T) {
 	graph := NewGraph(6)
 	actualNodeNumber := graph.GetNodeNumber()
@@ -50,4 +64,28 @@ func TestGettingEdgeWeightError(t *testing.T) {
 	assert.EqualError(t, sameArgError, "same argument error")
 	assert.Equal(t, -1, weight)
 	assert.NoError(t, noError)
+}
+
+func TestIsExampleGraphCorrect(t *testing.T) {
+	graph := setupGraphExample()
+	edgeNumber := graph.GetEdgeNumber()
+	actual, _ := graph.GetEdgeWeight(1, 0)
+	assert.Equal(t, 7, actual)
+	actual, _ = graph.GetEdgeWeight(2, 0)
+	assert.Equal(t, 9, actual)
+	actual, _ = graph.GetEdgeWeight(5, 0)
+	assert.Equal(t, 14, actual)
+	actual, _ = graph.GetEdgeWeight(3, 1)
+	assert.Equal(t, 15, actual)
+	actual, _ = graph.GetEdgeWeight(2, 1)
+	assert.Equal(t, 10, actual)
+	actual, _ = graph.GetEdgeWeight(3, 2)
+	assert.Equal(t, 11, actual)
+	actual, _ = graph.GetEdgeWeight(5, 2)
+	assert.Equal(t, 2, actual)
+	actual, _ = graph.GetEdgeWeight(4, 3)
+	assert.Equal(t, 6, actual)
+	actual, _ = graph.GetEdgeWeight(5, 4)
+	assert.Equal(t, 9, actual)
+	assert.Equal(t, 9, edgeNumber)
 }
