@@ -51,6 +51,7 @@ func (n *Node) AddChild(id int) {
 
 /*
 FullSearchByBfs returns string denoting order of passed nodes by BFS
+use queue structure
 */
 func (n *Node) FullSearchByBfs() string {
 	nodeQueue := make([]*Node, 0)
@@ -80,7 +81,7 @@ func (n *Node) FullSearchByBfs() string {
 
 /*
 FullSearchByDfs returns string denoting order of passed nodes by DFS
-(pre-order)
+(pre-order: use recursion)
 */
 func (n *Node) FullSearchByDfs() string {
 	order := ""
@@ -97,7 +98,7 @@ func recursion(currentNode *Node, order *string) {
 
 /*
 FullSearchByDfsStackVersion is the version of DFS using stack
-(another pre-order)
+(another pre-order: use stack structure)
 */
 func (n *Node) FullSearchByDfsStackVersion() string {
 	order := ""
