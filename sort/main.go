@@ -91,3 +91,6 @@ func sortStructByNameAndNumber(pSlice []Person) []Person {
 	sort.Sort(byNameAndNumber{people(pSlice)})
 	return pSlice
 }
+
+func main() {
+}
