@@ -89,3 +89,30 @@ func TestIsExampleGraphCorrect(t *testing.T) {
 	assert.Equal(t, 9, actual)
 	assert.Equal(t, 9, edgeNumber)
 }
+
+func TestIsDijkstraInitialStateCorrect(t *testing.T) {
+	graph := setupGraphExample()
+	dijkstra := NewDijkstra(graph, 0, 4)
+	assert.Equal(t, 0, dijkstra.start)
+	assert.Equal(t, 4, dijkstra.goal)
+	assert.Equal(t, []int{0, 1000, 1000, 1000, 1000, 1000}, dijkstra.costs)
+	assert.Equal(t, []int{-1, -1, -1, -1, -1, -1}, dijkstra.previouses)
+	assert.Equal(t, []int{0, 1, 2, 3, 4, 5}, dijkstra.candidates)
+}
+
+func TestGetMinimalCostNode(t *testing.T) {
+	graph := setupGraphExample()
+	dijkstra := NewDijkstra(graph, 0, 4)
+	assert.Equal(t, 0, dijkstra.GetMinimalCostNode())
+	dijkstra = NewDijkstra(graph, 3, 4)
+	assert.Equal(t, 3, dijkstra.GetMinimalCostNode())
+}
+
+func TestShortestPath(t *testing.T) {
+	graph := setupGraphExample()
+	dijkstra := NewDijkstra(graph, 0, 4)
+	actual := dijkstra.GetShortestPath()
+	assert.Equal(t, "5, 6, 1, : 20", actual)
+	dijkstra = NewDijkstra(graph, 2, 1)
+	assert.Equal(t, "2, 1, :10", dijkstra.GetShortestPath())
+}
