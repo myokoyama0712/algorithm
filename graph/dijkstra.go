@@ -1,73 +1,103 @@
 package graph
 
-type Dijkstra struct {
-	graph                         *Graph
-	costs, previouses, candidates []int
-	start, goal                   int
-}
+import "fmt"
 
-func NewDijkstra(graph *Graph, start, goal int) *Dijkstra {
+type Dijkstra struct {
+	startNodeId, goalNodeId int
+	graph                   *Graph
+	candidates              []int
+	nodeMap                 NodeMap
+}
+type Node struct {
+	cost           int
+	previousNodeId int
+}
+type NodeMap map[int]*Node
+
+func NewDijkstra(graph *Graph, startNodeId, goalNodeId int) *Dijkstra {
 	dijkstra := new(Dijkstra)
-	dijkstra.start = start
-	dijkstra.goal = goal
+	dijkstra.startNodeId = startNodeId
+	dijkstra.goalNodeId = goalNodeId
 	dijkstra.graph = graph
-	costs := make([]int, graph.GetNodeNumber())
-	previouses := make([]int, graph.GetNodeNumber())
-	candidates := make([]int, graph.GetNodeNumber())
+	candidates := []int{}
+	nodeMap := make(NodeMap)
 	for i := 0; i < graph.GetNodeNumber(); i++ {
-		if i == start {
-			costs[i] = 0
+		node := new(Node)
+		if i == startNodeId {
+			node.cost = 0
 		} else {
-			costs[i] = 1000
+			node.cost = 1000
 		}
-		previouses[i] = -1
-		candidates[i] = i
+		node.previousNodeId = -1
+		nodeMap[i] = node
+		candidates = append(candidates, i)
 	}
-	dijkstra.costs = costs
-	dijkstra.previouses = previouses
 	dijkstra.candidates = candidates
+	dijkstra.nodeMap = nodeMap
 
 	return dijkstra
 }
 
-func (d *Dijkstra) GetMinimalCostNode() int {
+// PopMinimalCostNode returns node that has minimal cost
+//  within candidates nodes.
+// And the returned node is deleted from candidates nodes.
+func (d *Dijkstra) PopMinimalCostNode() int {
 	minimalCost := 1000000
-	nodeNumber := -1
-	for i := 0; i < len(d.costs); i++ {
-		if d.costs[i] < minimalCost {
-			minimalCost = d.costs[i]
-			nodeNumber = i
+	nodeId := -1
+	for _, id := range d.candidates {
+		if d.nodeMap[id].cost < minimalCost {
+			minimalCost = d.nodeMap[id].cost
+			nodeId = id
 		}
 	}
+	d.deleteCandidate(nodeId)
+	return nodeId
+}
 
-	return nodeNumber
+func (d *Dijkstra) deleteCandidate(deletedNodeId int) {
+	newCandidates := []int{}
+	for _, id := range d.candidates {
+		if id != deletedNodeId {
+			newCandidates = append(newCandidates, id)
+		}
+	}
+	d.candidates = newCandidates
 }
 
 func (d *Dijkstra) GetShortestPath() string {
 	shortestPath := ""
 	costOfShortestPath := 0
 	for {
-		// 残っている候補の中からコストが最小のものを見つける
-		checkNode := d.GetMinimalCostNode()
-		if checkNode == d.goal {
-			costOfShortestPath = d.costs[d.goal]
+		// choose a node that have minimal cost within residual candidate nodes
+		checkNodeId := d.PopMinimalCostNode()
+		if checkNodeId == d.goalNodeId {
+			costOfShortestPath = d.nodeMap[d.goalNodeId].cost
 			break
 		}
-		//		d.costs = delete(d.costs, checkNode)
-		//		d.candidates = delete(d.candidates, checkNode)
 
-		for i := 0; i < d.graph.GetNodeNumber(); i++ {
-			if cost, err := d.graph.GetEdgeWeight(checkNode, i); cost >= 0 && err == nil {
-				if d.costs[checkNode]+cost < d.costs[i] {
-					d.costs[i] = d.costs[checkNode] + cost
-					d.previouses[i] = checkNode
+		for _, id := range d.candidates {
+			if cost, err := d.graph.GetEdgeWeight(checkNodeId, id); cost >= 0 && err == nil {
+				if d.nodeMap[checkNodeId].cost+cost < d.nodeMap[id].cost {
+					d.nodeMap[id].cost = d.nodeMap[checkNodeId].cost + cost
+					d.nodeMap[id].previousNodeId = checkNodeId
 				}
 			}
 		}
-
-		//		// this is equal to removing nodes
-		//		d.costs[checkNode] = 1000001	// TODO: more clear logic is necessary
 	}
 
-	return "5, 6, 1, : 20"
+	order := []int{}
+	prevNodeId := d.nodeMap[d.goalNodeId].previousNodeId
+	order = append(order, d.goalNodeId)
+	for {
+		if prevNodeId == -1 {
+			break
+		}
+		order = append(order, prevNodeId)
+		prevNodeId = d.nodeMap[prevNodeId].previousNodeId
+	}
+	for i := len(order) - 1; i >= 0; i-- {
+		shortestPath += fmt.Sprintf("%d, ", order[i])
+	}
+
+	return fmt.Sprintf("%s: %d", shortestPath, costOfShortestPath)
 }
