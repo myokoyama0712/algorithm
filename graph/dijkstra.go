@@ -67,7 +67,9 @@ func (d *Dijkstra) deleteCandidate(deletedNodeId int) {
 func (d *Dijkstra) GetShortestPath() string {
 	shortestPath := ""
 	costOfShortestPath := 0
+	step := 0
 	for {
+		step++
 		// choose a node that have minimal cost within residual candidate nodes
 		checkNodeId := d.PopMinimalCostNode()
 		if checkNodeId == d.goalNodeId {
@@ -99,5 +101,5 @@ func (d *Dijkstra) GetShortestPath() string {
 		shortestPath += fmt.Sprintf("%d, ", order[i])
 	}
 
-	return fmt.Sprintf("%s: %d", shortestPath, costOfShortestPath)
+	return fmt.Sprintf("%s: cost: %d, step: %d", shortestPath, costOfShortestPath, step)
 }

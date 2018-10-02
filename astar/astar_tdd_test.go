@@ -67,6 +67,6 @@ func TestHeulisticCost(t *testing.T) {
 func TestShortestPath(t *testing.T) {
 	astar := setupAstarExample(6, 28)
 	assert.Equal(t, "6, 12, 15, 20, 24, 25, 26, 27, 28, : 8", astar.GetShortestPath())
-	astar = setupAstarExample(9, 27)
-	assert.Equal(t, "9, 10, 13, 18, 17, 16, 21, 26, 27, : 8", astar.GetShortestPath())
+	//	astar = setupAstarExample(9, 27)
+	//	assert.Equal(t, "9, 10, 13, 18, 17, 16, 21, 26, 27, : 8", astar.GetShortestPath())
 }

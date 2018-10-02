@@ -76,7 +76,9 @@ func (astar *Astar) deleteCandidate(deletedNodeId int) {
 func (astar *Astar) GetShortestPath() string {
 	shortestPath := ""
 	costOfShortestPath := 0
+	step := 0
 	for {
+		step++
 		// choose a node that have minimal **total** cost within residual candidate nodes
 		checkNodeId := astar.PopMinHeulisticTotalCostNode()
 		if checkNodeId == astar.goalNodeId {
@@ -110,5 +112,5 @@ func (astar *Astar) GetShortestPath() string {
 		shortestPath += fmt.Sprintf("%d, ", order[i])
 	}
 
-	return fmt.Sprintf("%s: %d", shortestPath, costOfShortestPath)
+	return fmt.Sprintf("%s: cost: %d, step: %d", shortestPath, costOfShortestPath, step)
 }
