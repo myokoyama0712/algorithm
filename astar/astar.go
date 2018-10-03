@@ -55,8 +55,9 @@ func (astar *Astar) PopMinHeulisticTotalCostNode() int {
 	minimalCost := 1000000
 	nodeId := -1
 	for _, id := range astar.candidates {
-		if astar.nodeMap[id].realCost < minimalCost {
-			minimalCost = astar.nodeMap[id].realCost
+		predictedCost := astar.nodeMap[id].realCost + astar.nodeMap[id].heulisticCostToGoal
+		if predictedCost < minimalCost {
+			minimalCost = predictedCost
 			nodeId = id
 		}
 	}
